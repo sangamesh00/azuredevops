@@ -1,0 +1,33 @@
+---
+trigger:
+  - main
+pool:
+  name: Default
+jobs:
+  - job: myjob
+    displayName: my build job spring petclinic 
+    steps:
+      - task: Maven@3
+        displayName: build mvn package 
+        inputs: 
+          mavenPOMFile: 'pom.xml'
+          goals: package
+          publishJUnitResults: true
+          testRunTitle: mytestresult
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: Path
+          jdkDirectory: '/usr/lib/jvm/java-17-openjdk-amd64'
+      - task: CopyFiles@2
+        inputs:
+          Contents: "target/spring-petclinic-3.1.0-SNAPSHOT.jar"
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+          ArtifactName: springartifact
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          artifactName: springartifact
+          downloadPath: '/home/ubuntu/sang'
+        

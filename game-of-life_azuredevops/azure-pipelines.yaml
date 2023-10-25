@@ -1,0 +1,32 @@
+trigger: 
+  - master 
+pool: 
+  name: Default
+jobs:
+  - job: myjob
+    displayName: my build job gol  
+    steps: 
+      - task: Maven@3
+        inputs: 
+          mavenPOMFile: 'pom.xml'
+          goals: 'package'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: Path
+          jdkDirectory: /usr/lib/jvm/java-1.8.0-openjdk-amd64
+      - task: CopyFiles@2
+        inputs:
+          Contents: "**/target/gameoflife.war"
+          TargetFolder:  $(build.artifactstagingdirectory)
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: golartifact 
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          artifactName: golartifact 
+          downloadPath: '/home/ubuntu/sang'
+
+
+

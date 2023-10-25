@@ -1,0 +1,16 @@
+trigger: 
+  - master 
+pool: 
+  name: Default
+extends:
+  template: generic-maven-java.yaml
+  parameters: 
+    javadirectory: /usr/lib/jvm/java-1.8.0-openjdk-amd64
+    mavenGoal: package
+    artifactPath: '**/target/gameoflife.war'
+    artifactpathname: generic
+    artifactdownloadpath: '/home/ubuntu/sang'
+
+
+
+

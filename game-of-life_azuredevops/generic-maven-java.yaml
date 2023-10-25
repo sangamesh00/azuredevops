@@ -1,0 +1,39 @@
+parameters:
+- name: javadirectory 
+  type: string 
+  default: /usr/lib/jvm/java-1.8.0-openjdk-amd64
+- name: mavenGoal
+  type: string
+  default: package
+- name: artifactPath
+  type: string
+  default: '**/target/gameoflife.war'
+- name: artifactpathname
+  type: string
+  default: generic
+- name: artifactdownloadpath
+  type: string
+  default: '/home/ubuntu/sang'
+
+steps:
+- task: Maven@3
+  inputs: 
+    mavenPOMFile: 'pom.xml'
+    goals: ${{parameters.mavenGoal}}
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: Path
+    jdkDirectory: ${{parameters.javadirectory}}
+- task: CopyFiles@2
+  inputs:
+    Contents: ${{parameters.artifactpath}}
+    TargetFolder:  $(build.artifactstagingdirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: ${{parameters.artifactpathname}}
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    artifactName: ${{parameters.artifactpathname}}
+    downloadPath: ${{parameters.artifactdownloadpath}}
