@@ -2,7 +2,7 @@ trigger:
   - master 
 pool: 
   name: Default
-resources:
+resources:             # generic-maven-java.yaml stored in repository named buildtemplate 
   repositories:
     - repository: BuildTemplates
       name: BuildTemplates
