@@ -8,7 +8,7 @@ resources:             # generic-maven-java.yaml stored in repository named buil
       name: BuildTemplates
       type: git
 extends:
-  template: generic-maven-java.yaml
+  template: generic-maven-java.yaml # BuildTemplates@generic-maven-java.yaml
   parameters: 
     javadirectory: /usr/lib/jvm/java-1.8.0-openjdk-amd64
     mavenGoal: package
